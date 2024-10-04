@@ -5,7 +5,7 @@
 #include"WindowManager.h"
 #include"Slider.h"
 using namespace UIfunc;
-
+//git Version
 
 int main() {
 
