@@ -6,13 +6,15 @@
 namespace UIfunc {
 	class Slider : public IUIComponent
 	{
+		using OnChangedCallback = std::function<void(long)>;
 
 	public:
 		Slider() {}
 		long map(long value, long fromLow, long fromHigh, long toLow, long toHigh) {
+			toLow -= 1;
+			toHigh += 2;
 			return ((value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow);
 		}
-		// +20 END
 
 		Slider(sf::Vector2f Position, sf::Vector2f Size) {
 			setSize(Size);
@@ -28,25 +30,24 @@ namespace UIfunc {
 
 
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-			if (mHandle.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) &&
-				sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				if (mousePos.x < RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x - mHandle.getRadius() && mousePos.x > RectangleBackGround.getPosition().x - mHandle.getRadius()) {
+			if (mHandle.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				if (  mousePos.x > RectangleBackGround.getPosition().x && mousePos.x  < RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x ) {
 
 					//mHandle.setPosition(mousePos.x , mPosition.y);
-					mHandle.setPosition(mousePos.x - 3, mPosition.y - (mHandle.getRadius()));
+					mHandle.setPosition(mousePos.x - mHandle.getRadius(), mPosition.y - (mHandle.getRadius()));
 					
+					mOnChangedCallback(map(mHandle.getPosition().x + mHandle.getRadius(), RectangleBackGround.getPosition().x, RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x, 0, 100));
 
-					std::cout<< map(mHandle.getPosition().x, RectangleBackGround.getPosition().x - mHandle.getRadius(), RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x - mHandle.getRadius(), 0, 100)<<std::endl;
-					//- mHandle.getRadius() --
 				}
 			}
 		};
+		void SetOnChanged(OnChangedCallback callback) {
+		
+				mOnChangedCallback = callback;
+		}
 
 
 		//дял звука Get valume
-
-
-
 		//if (mousePos.x < mHandle.getPosition().x +( mHandle.getRadius()*2) && mousePos.x > mHandle.getPosition().x) { std::cout << "gg";
 		//mHandle.setPosition(mousePos.x , mPosition.y);
 		//mHandle.setPosition(mousePos.x - 3, mPosition.y - (mHandle.getRadius()));//
@@ -85,11 +86,17 @@ namespace UIfunc {
 		sf::CircleShape mHandle;
 		sf::RectangleShape RectangleBackGround;
 		sf::RectangleShape RectangleToFill;
-
+		OnChangedCallback  mOnChangedCallback;
 		sf::Vector2u mSoundScale;
 		sf::Vector2f mPosition;
 		sf::Vector2f mSize;
 		sf::Color mFillColor;
-		
+
 	};
 }
+//	SliderVolume->SetOnChanged([](long value) {		
+//std::cout << value << std::endl;});
+
+
+
+//гпт рефвкторинг та пояснення

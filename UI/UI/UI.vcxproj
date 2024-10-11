@@ -139,7 +139,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="IUIComponent.hpp" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="PinPongUI.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowManager.h" />
