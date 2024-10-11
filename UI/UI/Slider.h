@@ -9,6 +9,10 @@ namespace UIfunc {
 
 	public:
 		Slider() {}
+		long map(long value, long fromLow, long fromHigh, long toLow, long toHigh) {
+			return ((value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow);
+		}
+		// +20 END
 
 		Slider(sf::Vector2f Position, sf::Vector2f Size) {
 			setSize(Size);
@@ -21,28 +25,32 @@ namespace UIfunc {
 			window.draw(RectangleToFill);
 		}
 		void Update(sf::RenderWindow& window) override {
-			
+
 
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 			if (mHandle.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) &&
-				sf::Mouse::isButtonPressed(sf::Mouse::Left)) {	
-				if ( mousePos.x < RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x - mHandle.getRadius() && mousePos.x > RectangleBackGround.getPosition().x - mHandle.getRadius()) { std::cout << "gg";
+				sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				if (mousePos.x < RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x - mHandle.getRadius() && mousePos.x > RectangleBackGround.getPosition().x - mHandle.getRadius()) {
 
 					//mHandle.setPosition(mousePos.x , mPosition.y);
-					mHandle.setPosition(mousePos.x- 3, mPosition.y - (mHandle.getRadius()));
+					mHandle.setPosition(mousePos.x - 3, mPosition.y - (mHandle.getRadius()));
+					
 
+					std::cout<< map(mHandle.getPosition().x, RectangleBackGround.getPosition().x - mHandle.getRadius(), RectangleBackGround.getPosition().x + RectangleBackGround.getSize().x - mHandle.getRadius(), 0, 100)<<std::endl;
+					//- mHandle.getRadius() --
 				}
 			}
 		};
 
-		long map(long value, long fromLow, long fromHigh, long toLow, long toHigh) {
-			return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
-		}//дял звука Get valume
+
+		//дял звука Get valume
+
+
 
 		//if (mousePos.x < mHandle.getPosition().x +( mHandle.getRadius()*2) && mousePos.x > mHandle.getPosition().x) { std::cout << "gg";
-	    //mHandle.setPosition(mousePos.x , mPosition.y);
+		//mHandle.setPosition(mousePos.x , mPosition.y);
 		//mHandle.setPosition(mousePos.x - 3, mPosition.y - (mHandle.getRadius()));//
-	    //}
+		//}
 
 		sf::Vector2f getPosition() {
 
@@ -78,9 +86,10 @@ namespace UIfunc {
 		sf::RectangleShape RectangleBackGround;
 		sf::RectangleShape RectangleToFill;
 
+		sf::Vector2u mSoundScale;
 		sf::Vector2f mPosition;
 		sf::Vector2f mSize;
 		sf::Color mFillColor;
-
+		
 	};
 }
